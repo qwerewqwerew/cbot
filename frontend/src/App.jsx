@@ -2,7 +2,7 @@ import { useState } from "react";
 import "./App.css";
 
 const API1 = "http://localhost:8000/chat";
-const API = "https://cbot-mhae.onrender.com/";
+const API = "https://cbot-rfcl.onrender.com/chat";
 
 export default function App() {
   const [msgs, setMsgs] = useState([]);
