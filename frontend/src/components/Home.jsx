@@ -33,7 +33,7 @@ export function Home() {
       </section>
 
       {/* 영화 목록 */}
-      {loading && <Spinner className="text-center py-20 bg-black" />}
+      {loading && <Spinner className="text-center py-20 bg-gray-800" />}
 
       {!loading && (
         <>

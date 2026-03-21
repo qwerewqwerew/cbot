@@ -6,11 +6,11 @@ export function Card({ item }) {
   const poster = `https://image.tmdb.org/t/p/w500/${item.poster_path}`;
 
   return (
-    <div className="card py-10 group">
+    <div className="card py-10 group ">
       <Link to={`/movie/${item.id}`}>
         <div className="relative overflow-hidden rounded-md">
           <img
-            className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-110"
+            className="object-cover w-full h-72 transition-transform duration-300 group-hover:scale-110"
             src={poster}
             alt={item.title}
           />

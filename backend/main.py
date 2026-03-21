@@ -30,9 +30,14 @@ def ask_ai(q: str) -> str:
     }
     res = requests.post(HF_URL, headers=headers, json=payload)
     data = res.json()
+    if "choices" not in data:
+        raise ValueError(data.get("error", {}).get("message", "AI 응답 오류"))
     return data["choices"][0]["message"]["content"]
 
 @app.post("/chat")
 def chat(msg: Msg):
-    reply = ask_ai(msg.text)
-    return {"reply": reply}
+    try:
+        reply = ask_ai(msg.text)
+        return {"reply": reply}
+    except Exception as e:
+        return {"reply": f"오류가 발생했습니다: {str(e)}"}

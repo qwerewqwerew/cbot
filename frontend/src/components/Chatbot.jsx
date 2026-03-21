@@ -54,22 +54,15 @@ export default function Chatbot() {
   return (
     <>
       {/* 플로팅 버튼 */}
-      <button
-        onClick={() => setOpen((v) => !v)}
-        className="fixed bottom-8 right-8 w-14 h-14 rounded-full bg-yellow-500 text-gray-700 border-none text-2xl cursor-pointer shadow-lg z-[1000] flex items-center justify-center"
-        title="AI 챗봇"
-      >
+      <button onClick={() => setOpen((v) => !v)} className="fixed bottom-8 right-8 w-14 h-14 rounded-full bg-yellow-500 text-gray-700 border-none text-2xl cursor-pointer shadow-lg z-50 flex items-center justify-center" title="AI 챗봇">
         {open ? <FontAwesomeIcon icon={faXmark} /> : <FontAwesomeIcon icon={faComment} />}
       </button>
 
       {/* 채팅 모달 */}
       {open && (
-        <div className="fixed bottom-22 right-8 w-85 max-h-[500px] bg-[#141414] border border-[#333] rounded-xl flex flex-col shadow-2xl z-[999]">
-
+        <div className="fixed bottom-24 right-8 w-85 max-h-1/2 bg-gray-950 border border-gray-600 rounded-xl flex flex-col shadow-2xl z-40">
           {/* 헤더 */}
-          <div className="py-3 px-4 bg-yellow-500 rounded-t-xl font-bold text-sm text-gray-700">
-            Goflix AI 챗봇
-          </div>
+          <div className="py-3 px-4 bg-yellow-500 rounded-t-xl font-bold text-sm text-gray-700">Goflix AI 챗봇</div>
 
           {/* 메시지 목록 */}
           <div className="flex-1 overflow-y-auto p-3 flex flex-col gap-2 min-h-50 max-h-85">
@@ -77,32 +70,18 @@ export default function Chatbot() {
               <div
                 key={i}
                 className={`py-2 px-3 max-w-4/5 text-sm leading-snug whitespace-pre-wrap break-words text-gray-700
-                  ${m.role === "user"
-                    ? "self-end bg-yellow-500 rounded-tl-xl rounded-tr-xl rounded-bl-xl"
-                    : "self-start bg-gray-100 rounded-tl-xl rounded-tr-xl rounded-br-xl"
-                  }`}
+                  ${m.role === "user" ? "self-end bg-yellow-500 rounded-tl-xl rounded-tr-xl rounded-bl-xl" : "self-start bg-gray-100 rounded-tl-xl rounded-tr-xl rounded-br-xl"}`}
               >
                 {m.text}
               </div>
             ))}
-            {loading && (
-              <div className="self-start bg-gray-100 text-gray-400 rounded-tl-xl rounded-tr-xl rounded-br-xl py-2 px-3 text-sm">
-                ...
-              </div>
-            )}
+            {loading && <div className="self-start bg-gray-100 text-gray-400 rounded-tl-xl rounded-tr-xl rounded-br-xl py-2 px-3 text-sm">...</div>}
             <div ref={bottomRef} />
           </div>
 
           {/* 입력 */}
           <div className="flex border-t border-[#333] p-2 gap-2">
-            <input
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={handleKeyDown}
-              placeholder="메시지 입력..."
-              disabled={loading}
-              className="flex-1 bg-[#1e1e1e] border border-[#444] rounded-lg py-2 px-3 text-gray-700 text-sm outline-none"
-            />
+            <input value={input} onChange={(e) => setInput(e.target.value)} onKeyDown={handleKeyDown} placeholder="메시지 입력..." disabled={loading} className="flex-1 bg-[#1e1e1e] border border-[#444] rounded-lg py-2 px-3 text-gray-700 text-sm outline-none placeholder:text-zinc-300" />
             <button
               onClick={sendMessage}
               disabled={loading || !input.trim()}

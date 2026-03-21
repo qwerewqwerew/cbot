@@ -42,7 +42,7 @@ export function Modal({ onClose, children }) {
 
 export function Container({ className = "", children }) {
   return (
-    <section className={`bg-black px-11 ${className}`}>
+    <section className={`bg-gray-800 px-11 ${className}`}>
       <div className="container mx-auto">
         {children}
       </div>
