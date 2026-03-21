@@ -1,57 +1,42 @@
-import { useState } from "react";
-import "./App.css";
-
-const API1 = "http://localhost:8000/chat";
-const API = "https://cbot-rfcl.onrender.com/chat";
+import { useState, useEffect } from "react";
+import { Outlet } from "react-router";
+import { Header } from "./components/Header.jsx";
+import { Footer } from "./components/Footer.jsx";
+import api from "./api/axios";
 
 export default function App() {
-  const [msgs, setMsgs] = useState([]);
-  const [input, setInput] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [now, setNow] = useState(null);
+  const [popular, setPopular] = useState(null);
+  const [topRated, setTopRated] = useState(null);
 
-  const send = async () => {
-    if (!input.trim()) return;
-    const userMsg = { role: "user", text: input };
-    setMsgs((prev) => [...prev, userMsg]);
-    setInput("");
-    setLoading(true);
+  async function loadMovie() {
+    const [res1, res2, res3] = await Promise.all([
+      api.get("movie/now_playing"),
+      api.get("movie/popular"),
+      api.get("movie/top_rated"),
+    ]);
+    setNow(res1.data.results.filter((m) => m.poster_path));
+    setPopular(res2.data.results.filter((m) => m.poster_path));
+    setTopRated(res3.data.results.filter((m) => m.poster_path));
+  }
 
-    const res = await fetch(API, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ text: input }),
-    });
-    const data = await res.json();
-    const botMsg = { role: "bot", text: data.reply };
-    setMsgs((prev) => [...prev, botMsg]);
-    setLoading(false);
-  };
+  useEffect(() => {
+    loadMovie();
+  }, []);
 
-  const onKey = (e) => {
-    if (e.key === "Enter") send();
+  const loading = now === null || popular === null || topRated === null;
+  const ctx = {
+    now: now || [],
+    popular: popular || [],
+    topRated: topRated || [],
+    loading,
   };
 
   return (
-    <div className="wrap">
-      <h1>🤖 AI 챗봇</h1>
-      <div className="box">
-        {msgs.map((m, i) => (
-          <div key={i} className={m.role}>
-            <span>{m.role === "user" ? "🧑" : "🤖"}</span>
-            <p>{m.text}</p>
-          </div>
-        ))}
-        {loading && <p className="loading">생각 중...</p>}
-      </div>
-      <div className="input-row">
-        <input
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyDown={onKey}
-          placeholder="메시지를 입력하세요"
-        />
-        <button onClick={send}>전송</button>
-      </div>
-    </div>
+    <>
+      <Header />
+      <Outlet context={ctx} />
+      <Footer />
+    </>
   );
 }
