@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Outlet } from "react-router";
 import { Header } from "./components/Header.jsx";
 import { Footer } from "./components/Footer.jsx";
+import Chatbot from "./components/Chatbot.jsx";
 import api from "./api/axios";
 
 export default function App() {
@@ -37,6 +38,7 @@ export default function App() {
       <Header />
       <Outlet context={ctx} />
       <Footer />
+      <Chatbot />
     </>
   );
 }
